@@ -15,4 +15,8 @@ resource "aws_default_security_group" "vpc-01-default-sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "${var.vpc-01-name}-Default-SG"
+  }
 }

@@ -3,7 +3,7 @@ resource "aws_eip" "vpc-01-nat-eip" {
   
 
   tags = {
-    Name = "VPC-01-NAT-EIP"
+    Name = "${var.vpc-01-name}-NAT-EIP"
 
     
   }
@@ -20,7 +20,7 @@ resource "aws_nat_gateway" "vpc-01-nat-gw" {
   subnet_id     = aws_subnet.vpc-01-public-subnets[0].id
 
   tags = {
-    Name = "VPC-01-NAT-GW"
+    Name = "${var.vpc-01-name}-NAT-GW"
   }
 
   depends_on = [aws_internet_gateway.vpc-01-igw]

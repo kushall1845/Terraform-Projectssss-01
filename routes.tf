@@ -9,7 +9,7 @@ resource "aws_default_route_table" "vpc-01-default-rt" {
   }
 
   tags = {
-    Name = "vpc-01-Default/Public-rt"
+    Name = "${var.vpc-01-name}-Default/Public-rt"
   }
   
 }
@@ -25,7 +25,7 @@ resource "aws_route_table" "vpc-01-private-rt" {
 
   
   tags = {
-    Name = "VPC-01-Private-rt"
+    Name = "${var.vpc-01-name}-Private-rt"
   }
 
   depends_on = [ aws_nat_gateway.vpc-01-nat-gw ]
