@@ -1,11 +1,13 @@
 
-resource "aws_instance" "vpc_01_web_instance" {
-  count         = 3
-  ami           = "ami-0cfde0ea8edd312d4" # Replace with your AMI
-  instance_type = "t3.micro"
-  key_name = "pemkeyohio"
+# creation of web servers hsoting nginx in private subnets.
 
-  subnet_id = aws_subnet.vpc-01-public-subnets[count.index % 3].id
+resource "aws_instance" "vpc_01_web_servers" {
+  count         = var.instance_count
+  ami           = var.ami                       # Replace with your AMI
+  instance_type = var.instance_type
+  key_name = var.key_name
+  subnet_id = aws_subnet.vpc-01-private-subnets[count.index % 3].id
+  associate_public_ip_address = false
 
   user_data = file("userdata.sh")
 
@@ -14,4 +16,43 @@ resource "aws_instance" "vpc_01_web_instance" {
     Name = "Web-Server-${count.index+1}"
     Subnet = "Subnet-${count.index % 3}"
   }
+
+  depends_on = [ aws_nat_gateway.vpc-01-nat-gw, aws_route_table_association.vpc-01-private-rt-assoc  ]
 }
+
+
+
+
+
+
+# creation of jump server in public subnets.
+
+resource "aws_instance" "vpc_01_Jump_Servers" {
+  count         = var.instance_count
+  ami           = var.ami # Replace with your AMI
+  instance_type = var.instance_type
+  key_name = var.key_name
+  subnet_id = aws_subnet.vpc-01-public-subnets[count.index % 3].id
+  associate_public_ip_address = true
+
+  user_data = file("userdata.sh")
+
+  
+
+  
+
+
+  tags = {
+    Name = "Jump-Server-${count.index+1}"
+    Subnet = "Public-Subnet-${count.index % 3}"
+  }
+
+     depends_on = [ aws_internet_gateway.vpc-01-igw ]
+  
+}
+
+
+
+
+
+
