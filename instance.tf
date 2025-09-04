@@ -21,6 +21,35 @@ resource "aws_instance" "vpc_01_web_servers" {
 }
 
 
+# creation of app servers in private subnets.
+
+resource "aws_instance" "vpc_01_app_servers" {
+  count         = var.instance_count
+  ami           = var.ami # Replace with your AMI
+  instance_type = var.instance_type
+  key_name = var.key_name
+  subnet_id = aws_subnet.vpc-01-public-subnets[count.index % 3].id
+  associate_public_ip_address = false
+
+  user_data = file("userdata.sh")
+
+  
+
+  
+
+  
+
+
+  tags = {
+    Name = "App-Server-${count.index+1}"
+    Subnet = "Public-Subnet-${count.index % 3}"
+  }
+
+     depends_on = [ aws_internet_gateway.vpc-01-igw ]
+  
+}
+
+
 
 
 
@@ -35,7 +64,7 @@ resource "aws_instance" "vpc_01_Jump_Servers" {
   subnet_id = aws_subnet.vpc-01-public-subnets[count.index % 3].id
   associate_public_ip_address = true
 
-  user_data = file("userdata.sh")
+  user_data = file("tomcat.sh")
 
   
 
