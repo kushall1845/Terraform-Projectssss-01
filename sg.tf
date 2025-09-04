@@ -39,9 +39,9 @@ resource "aws_security_group" "public_alb_sg" {
 resource "aws_vpc_security_group_ingress_rule" "inbounc_public_alb" {
   security_group_id = aws_security_group.public_alb_sg.id
   cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1"  # All protocols
-  from_port         = 0
-  to_port           = 0
+  ip_protocol       = "tcp"  # All protocols
+  from_port         = 80
+  to_port           = 80
 
    depends_on = [ aws_security_group.public_alb_sg ]
 }
