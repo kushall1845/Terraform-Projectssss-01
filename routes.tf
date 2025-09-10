@@ -39,3 +39,23 @@ resource "aws_route_table_association" "vpc-01-private-rt-assoc" {
   depends_on = [ aws_route_table.vpc-01-private-rt ]
   
 }
+
+
+resource "aws_route_table_association" "vpc-01-prvtapp-servers-rt-assoc" {
+  count          = length(data.aws_availability_zones.available.names)
+  subnet_id      = aws_subnet.vpc-01-private-subnets-appservers[count.index].id
+  route_table_id = aws_route_table.vpc-01-private-rt.id
+
+  depends_on = [ aws_route_table.vpc-01-private-rt ]
+  
+}
+
+
+resource "aws_route_table_association" "vpc-01-private-dbs-rt-assoc" {
+  count          = length(data.aws_availability_zones.available.names)
+  subnet_id      = aws_subnet.vpc-01-private-subnets-dbs[count.index].id
+  route_table_id = aws_route_table.vpc-01-private-rt.id
+
+  depends_on = [ aws_route_table.vpc-01-private-rt ]
+  
+}
