@@ -53,3 +53,34 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
 
   depends_on = [ aws_security_group.public_alb_sg ]
 }
+
+
+
+
+
+
+resource "aws_security_group" "internal_alb_sg" {
+  name        = "internal-alb-sg"
+  description = "Allow inbound from trusted sources to internal ALB"
+  vpc_id      = aws_vpc.vpc-01.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"] # or restrict to bastion/NAT
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Internal-ALB-SG"
+  }
+
+  depends_on = [ aws_instance.vpc_01_app_servers ]
+}
