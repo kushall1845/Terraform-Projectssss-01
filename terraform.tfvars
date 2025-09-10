@@ -6,3 +6,12 @@ instance_count = 3
 ami = "ami-0cfde0ea8edd312d4"
 instance_type = "t3.micro"
 key_name = "pemkeyohio"
+
+mydb_identifier = "mydb-instance"
+mydb_engine = "mysql"
+mydb_instance_class = "db.t3.micro"
+mydb_allocated_storage = 20
+mydb_username = "dbadmin"
+mydb_password = "kushal123"
+mydb_skip_final_snapshot = true
+
