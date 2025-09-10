@@ -28,7 +28,7 @@ resource "aws_instance" "vpc_01_app_servers" {
   ami           = var.ami # Replace with your AMI
   instance_type = var.instance_type
   key_name = var.key_name
-  subnet_id = aws_subnet.vpc-01-public-subnets[count.index % 3].id
+  subnet_id = aws_subnet.vpc-01-private-subnets-appservers[count.index % 3].id
   associate_public_ip_address = false
 
   user_data = file("userdata.sh")
@@ -42,10 +42,10 @@ resource "aws_instance" "vpc_01_app_servers" {
 
   tags = {
     Name = "App-Server-${count.index+1}"
-    Subnet = "Public-Subnet-${count.index % 3}"
+    Subnet = "Private-Subnet-${count.index % 3}"
   }
 
-     depends_on = [ aws_internet_gateway.vpc-01-igw ]
+      depends_on = [ aws_nat_gateway.vpc-01-nat-gw, aws_route_table_association.vpc-01-prvtapp-servers-rt-assoc  ]
   
 }
 
