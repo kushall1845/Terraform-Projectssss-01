@@ -5,3 +5,4 @@ terraform.tfstate.backup
 *.tfstate
 tomcat.sh
 instructions.txt
+key.pem

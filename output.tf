@@ -5,6 +5,12 @@ output "public_alb_dns_name" {
   value       = aws_lb.public_alb.dns_name
 }
 
+
+output "internal_alb_dns_name" {
+  description = "Internal DNS name of the Application Load Balancer"
+  value       = aws_lb.internal_alb.dns_name
+}
+
 output "jump_server_ips" {
   description = "Public IP addresses of the Jump Servers"
   value       = [for instance in aws_instance.vpc_01_Jump_Servers : instance.public_ip]
